@@ -52,24 +52,23 @@ public class Main extends Application {
             values[1] = 0;
             values[2] = 0;
             txtViewer.setText("");
+            (this.btnReset).setDisable(true);
+            (this.btnEq).setDisable(true);
         });
 
         //Operators Button
         calc cal = new calc();
         Button[] btnOps = new Button[4];
         btnOps[0] = new Button("/");
-        btnOps[0].setOnAction(cal);
         btnOps[1] = new Button("*");
-        btnOps[1].setOnAction(cal);
         btnOps[2] = new Button("-");
-        btnOps[2].setOnAction(cal);
         btnOps[3] = new Button("+");
-        btnOps[3].setOnAction(cal);
         for (Button btnOp : btnOps) {
             btnOp.setMaxSize(max, max);
+            btnOp.setOnAction(cal);
         }
 
-        //Button Numbers
+        //Number Buttons
         Button[] btnInts = new Button[10];
         for (int i = 0; i < 10; i++) {
             btnInts[i] = new Button(i + "");
@@ -88,6 +87,7 @@ public class Main extends Application {
             */
         }
 
+        //Equal Button
         btnEq = new Button("=");
         btnEq.setDisable(true);
         btnEq.setMaxSize(max, max);
@@ -112,11 +112,14 @@ public class Main extends Application {
         
         //lblStatus = new Label("Begin");
 
+        //UI Design/Organizing
         ColumnConstraints col = new ColumnConstraints();
         col.setPercentWidth(25);
 
         GridPane btns = new GridPane();
-        btns.getColumnConstraints().addAll(col, col, col, col);
+        btns.getColumnConstraints().addAll(col, col, col, col); //create cols
+        
+        //Place Operand Buttons (btn, col, row) + Equal
         btns.add(btnReset, 0, 0);
         btns.add(btnOps[0], 1, 0);
         btns.add(btnOps[1], 2, 0);
@@ -125,6 +128,7 @@ public class Main extends Application {
         btns.add(btnEq, 3, 2, 1, 2);
         
 
+        //Place Number Buttons
         int i = 1;
         for (int r = 1; r < 4; r++) {
             for (int c = 1; c < 4; c++) {
@@ -143,7 +147,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(root);
 
-        primaryStage.setTitle("JQuonProjects Calculator");
+        primaryStage.setTitle("Simple Java Calculator");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -162,6 +166,8 @@ public class Main extends Application {
             double val = Double.parseDouble(txtViewer.getText());
             btnReset.setDisable(false);
             btnEq.setDisable(false);
+            
+            //Get Operand Selected
             Button source = (Button) event.getSource();
             lastOp = source.getText();
             if (values[0] == 0) {
