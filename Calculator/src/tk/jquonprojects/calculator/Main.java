@@ -18,8 +18,7 @@ import javafx.stage.Stage;
  */
 /*
 GUI opens up
-Press numbers
-goes into text field
+Press numbers (goes into text field)
 press operator (store numbers)
 press numbers
 press equal
