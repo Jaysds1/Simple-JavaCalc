@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -77,14 +78,6 @@ public class Main extends Application {
                 Button source = (Button) ActionEvent.getSource();
                 txtViewer.appendText(source.getText());
             });
-            /*btnInts[i].setOnKeyPressed((KeyEvent) -> {
-                char digit = KeyEvent.getCharacter().charAt(0);
-                
-                if (digit >= '0' && digit <= '9') {
-                    txtViewer.appendText(digit + "");
-                }
-            });
-            */
         }
 
         //Equal Button
@@ -109,16 +102,15 @@ public class Main extends Application {
             }
             txtViewer.setText(values[2] + "");
         });
-        
-        //lblStatus = new Label("Begin");
 
+        //lblStatus = new Label("Begin");
         //UI Design/Organizing
         ColumnConstraints col = new ColumnConstraints();
         col.setPercentWidth(25);
 
         GridPane btns = new GridPane();
         btns.getColumnConstraints().addAll(col, col, col, col); //create cols
-        
+
         //Place Operand Buttons (btn, col, row) + Equal
         btns.add(btnReset, 0, 0);
         btns.add(btnOps[0], 1, 0);
@@ -126,7 +118,6 @@ public class Main extends Application {
         btns.add(btnOps[2], 3, 0);
         btns.add(btnOps[3], 3, 1);
         btns.add(btnEq, 3, 2, 1, 2);
-        
 
         //Place Number Buttons
         int i = 1;
@@ -150,6 +141,33 @@ public class Main extends Application {
         primaryStage.setTitle("Simple Java Calculator");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        //KeyBoard Listener
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                char digit = event.getText().charAt(0);
+                if (digit >= '0' && digit <= '9') {
+                    txtViewer.appendText(digit + "");
+                }else{
+                    //Trigger button click on operand
+                    switch(digit){
+                        case '/':
+                            btnOps[0].fire();
+                            break;
+                        case '*':
+                            btnOps[1].fire();
+                            break;
+                        case '-':
+                            btnOps[2].fire();
+                            break;
+                        case '+':
+                            btnOps[3].fire();
+                            break;
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -166,7 +184,7 @@ public class Main extends Application {
             double val = Double.parseDouble(txtViewer.getText());
             btnReset.setDisable(false);
             btnEq.setDisable(false);
-            
+
             //Get Operand Selected
             Button source = (Button) event.getSource();
             lastOp = source.getText();
